@@ -10,9 +10,6 @@ on fs
     chown system system /dev/ion
     install_keyring
 
-    # Mount firmware
-    mount vfat /dev/block/bootdevice/by-name/modem /firmware ro shortname=lower uid=1000 gid=1000 dmask=227 fmask=337
-
     # Only needed when we don't include all required blobs for crypto
     start prepdecrypt
 
@@ -90,9 +87,6 @@ on property:sys.listeners.registered=true
     start keymaster-3-0
     start gatekeeper-1-0
     start servicemanager
-
-on late-init
-    start fingerprintid
 
 on boot
     # Enable Power modes and set the CPU Freq Sampling rates
