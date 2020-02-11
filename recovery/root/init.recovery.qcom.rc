@@ -9,16 +9,8 @@ on fs
     chmod 0664 /dev/ion
     chown system system /dev/ion
     install_keyring
-
-    # Only needed when we don't include all required blobs for crypto
-    start prepdecrypt
-
-service prepdecrypt /init.prepdecrypt.sh
-    oneshot
-    user root
-    group root
-    disabled
-    seclabel u:r:recovery:s0
+    setprop crypto.ready 0
+    setprop crypto.ready 1
 
 # Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
 service sbinqseecomd /sbin/qseecomd
@@ -81,8 +73,6 @@ on property:crypto.ready=0
 
 on property:crypto.ready=1
     start sbinqseecomd
-
-on property:sys.listeners.registered=true
     start hwservicemanager
     start keymaster-3-0
     start gatekeeper-1-0
